@@ -1,0 +1,434 @@
+$(document).ready(function () {
+
+
+    if ($(".sliderGreetings").length) {
+        $('.sliderGreetings').slick({
+            infinite: false,
+            slidesToShow: 1,
+            arrows: true,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1,
+                        arrows: false,
+                    }
+                }
+            ]
+        });
+    }
+
+    if ($(".sliderRoadMap").length) {
+        let slider = $('.sliderRoadMap')
+
+        slider.slick({
+            infinite: false,
+            slidesToShow: 5,
+            slidesToScroll: 5,
+            arrows: false,
+            responsive: [
+                {
+                    breakpoint: 1600,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                    }
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                    }
+                }
+            ]
+        });
+
+        $('.slickArrowNext').on('click', function () {
+            slider.slick('slickNext');
+        });
+
+        $('.slickArrowPrev').on('click', function () {
+            slider.slick('slickPrev');
+        });
+
+    }
+
+    if ($(".sliderAbout").length) {
+        $('.sliderAbout').slick({
+            infinite: false,
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            arrows: true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2,
+                    }
+                },
+                {
+                    breakpoint: 640,
+                    settings: {
+                        arrows: false,
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                    }
+                }
+            ]
+        });
+    }
+
+    if ($(".sliderContracts").length) {
+
+        let slider = $('.sliderContracts')
+
+        slider.slick({
+            infinite: false,
+            slidesToShow: 1,
+        });
+
+        if ($(".contractsTabs").length) {
+            $(".contractsTabs").on("_before", function () {
+                slider.slick('refresh');
+            });
+        }
+    }
+
+    if ($(".sliderSelectContracts").length) {
+        let slider = $('.sliderSelectContracts')
+        slider.slick({
+            infinite: false,
+            slidesToShow: 1,
+        });
+
+        slider.on('afterChange', function () {
+            $(".sliderSelectContracts .slick-slide.slick-active").find("input").prop("checked", true).change();
+        });
+    }
+
+    if ($(".copyRef").length) {
+        new ClipboardJS('.copyRef');
+
+        let messageShow = function (e) {
+            let message = e.siblings('.copyMessage')
+            message.stop().fadeIn(200)
+
+            setTimeout(function () {
+                message.stop().fadeOut(200)
+            }, 2000)
+        }
+
+        $(".copyRef").map(function () {
+
+            $(this).on('click', function (e) {
+                e.preventDefault()
+
+                if ($(this).attr('data-clipboard-text') !== undefined) {
+                    messageShow($(this))
+                }
+
+                if ($(this).attr('data-clipboard-target') !== undefined) {
+                    messageShow($(this))
+                }
+
+            })
+        })
+    }
+
+    if ($(".grafic").length) {
+
+        Highcharts.setOptions({
+            colors: ['#00aeff', '#0078ff', '#0030f0', '#0021a6', '#001464', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
+        });
+
+        Highcharts.chart('container', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+            },
+            title: {
+                text: ''
+            },
+            tooltip: {
+                borderWidth: 0,
+                backgroundColor: "rgba(255,255,255,0)",
+                borderRadius: 0,
+                shadow: false,
+                useHTML: true,
+                percentageDecimals: 2,
+                backgroundColor: "rgba(255,255,255,1)",
+                formatter: function () {
+                    return '<div class="tooltop">' + this.point.name + '<br />' + '<b>' + this.y + '%' + '</b></div>';
+                }
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        style: {
+                            fontSize: '24px',
+                        },
+                        format: "<span class='pr'>{point.percentage:.1f}%</span> " + "<span class='name'>{point.name}</span>"
+                    }
+                }
+            },
+            series: [{
+                name: 'Brands',
+                colorByPoint: true,
+                data: [{
+                    name: 'Staking Reward Pool',
+                    y: 50,
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: 'Development Fund',
+                    y: 10
+                }, {
+                    name: 'IDO',
+                    y: 15
+                }, {
+                    name: 'Football Academy Foundation',
+                    y: 20
+                }, {
+                    name: 'Reserve',
+                    y: 5
+                }]
+            }]
+        });
+    }
+
+    if ($(".tabs").length) {
+        $('.tabs').tabslet({
+            animation: true
+        });
+    }
+
+    if ($('.faqItem').length > 0) {
+        let dropHead = $('.faqItem > .faqQuest'),
+            dropContent = $('.faqItem > .faqAnswer');
+
+        $('.faqItem').map(function () {
+            let el = $(this)
+            if (el.find(dropHead).length > 0 && el.find(dropContent).length > 0) {
+
+                el.find(dropHead).on('click', function () {
+                    let el = $(this),
+                        cont = el.siblings(dropContent),
+                        parent = el.parent('.faqItem');
+
+                    if (parent.hasClass('active')) {
+                        cont.stop().slideUp(500, function () {
+                            parent.removeClass('active');
+                        });
+                    } else {
+                        cont.stop().slideDown(300);
+                        parent.addClass('active');
+                    }
+                })
+            }
+        })
+    }
+
+    if ($(".modalsScroll").length) {
+        openMod();
+    }
+
+    if ($(".clock").length) {
+        clockStart();
+    }
+
+    if ($(".selectricBl").length) {
+        $(".selectricBl").map(function () {
+            $(this).selectric();
+        })
+        $('.selectricPic').selectric({
+            arrowButtonMarkup: '<span class="iconArrow"></span>',
+            labelBuilder: function (itemData, element, index) {
+                return $(itemData.element[0]).attr('placeholder') ?
+                    '<span class="placeholder">' + itemData.text + '</span>' :
+                    $(itemData.element[0]).attr('data-image') !== undefined ?
+                        '<span class="payIcon" style="background-image: url(' + $(itemData.element[0]).attr('data-image') + ');"></span>' + itemData.text :
+                        itemData.text;
+            },
+            optionsItemBuilder: function (itemData) {
+                return $(itemData.element[0]).attr('data-image') !== undefined ?
+                    '<span class="payIcon" style="background-image: url(' + $(itemData.element[0]).attr('data-image') + ');"></span>' + itemData.text :
+                    itemData.text;
+            }
+        })
+    }
+
+    if ($(".timer").length > 0) {
+        $(".timer").map(timer)
+    }
+
+    if ($(".dial").length > 0) {
+        $(".dial").knob({
+            'min': 0,
+            'max': 100,
+            'thickness': .12,
+            'readOnly': true,
+            "fgColor": "#0042ff",
+            "bgColor": "#1b2447",
+            'format': function (value) {
+                return value + '%';
+            }
+        });
+    }
+
+    if ($(".menuBurger").length) {
+        $(".menuBurger").on("click", function () {
+            if ($(".header").length > 0) {
+                $(".menuBurger").toggleClass("open")
+                $(".menu").toggleClass("open").slideToggle(200)
+            }
+            if ($(".cabWrapper").length > 0) {
+                $(".menuBurger").toggleClass("open")
+                $(".cabMenuWrapper").toggleClass("open").slideToggle(200)
+            }
+        })
+    }
+
+    if ($(".wow").length > 0) {
+        new WOW().init();
+    }
+
+})
+
+function preloader() {
+    let loader = $(".loader")
+    let precent = $(".precent-num")
+    let num = 0;
+    let interval = setInterval(() => {
+        num = num + 2;
+        if (num >= 100) {
+            clearInterval(interval);
+            $("body").addClass("load")
+            loader.fadeOut(500)
+        }
+        precent.text(num)
+    }, 10);
+}
+
+function clock() {
+    let date = new Date(),
+        utc = date.getTime() + (date.getTimezoneOffset() * 60000 + 60 * 60 * 1000);
+        date = new Date(utc);
+        day = date.getDate(),
+        month = date.getMonth(),
+        monthArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        weekDay = date.getDay(),
+        daysArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        year = date.getFullYear(),
+        hour = date.getHours(),
+        min = date.getMinutes(),
+        sec = date.getSeconds();
+
+    if (hour < 10) hour = '0' + hour;
+    if (min < 10) min = '0' + min;
+    if (sec < 10) sec = '0' + sec;
+
+    $('.clock').find('#date').html(day + ' ' + monthArr[month] + ' ' + year + ',' + ' ' + daysArr[weekDay]);
+    $('.clock').find('#time').html("<span class='num'> " + hour + "</span>" + "<span class='dot'>:</span>" + "<span class='num'> " + min + "</span>" + "<span class='dot'>:</span>" + "<span class='num'> " + sec + "</span>");
+}
+
+function clockStart() {
+    setInterval(clock, 1000);
+}
+
+let m
+const timer = function () {
+    let now = new Date($(this).attr('data-now')),
+        startTime = new Date($(this).attr('data-start')),
+        finishTime = new Date($(this).attr('data-end')),
+        startMS = startTime.getTime(),
+        finishMS = finishTime.getTime(),
+        nowMS = now.getTime(),
+        betweenMS = finishMS - startMS,
+        lastMS = finishMS - nowMS,
+        percent = lastMS * 100 / betweenMS,
+        lastHour,
+        lastMin,
+        lastSec;
+    percent = 100 - percent.toFixed();
+
+    if ($(this).siblings(".valueInvest")) {
+        $(this).siblings(".valueInvest").find("[class='val']").attr('data-pr', percent);
+        $(this).siblings(".valueInvest").find("[class='val']").text(percent + ' %');
+
+        let pr = $(this).siblings(".valueInvest").find("[class='val']").attr("data-pr")
+        let prog = $(this).siblings(".valueInvest").find(".prog")
+        let cubePr = ((16 / 100) * pr)
+        cubePr = cubePr.toFixed();
+        for (let i = 0; i < cubePr; i++) {
+            prog.find(".cube").eq(i).addClass("open")
+        }
+
+    }
+    if ($(this).siblings(".circleBl")) {
+        $(this).siblings(".circleBl").find("input").attr('value', percent);
+        $(this).siblings(".circleBl").find("input").val(percent).trigger('change');
+    }
+
+    m = setInterval(function () {
+        nowMS = nowMS + 1000;
+        lastMS = finishMS - nowMS;
+
+        // lastHour = Math.floor(lastMS / 1000 / 60 / 60)
+        // lastMin = Math.floor((lastMS - (lastHour * 1000 * 60 * 60)) / 1000 / 60)
+        // lastSec = Math.floor((lastMS - (lastHour * 1000 * 60 * 60) - (lastMin * 60 * 1000)) / 1000)
+
+        lastHour = Math.floor(lastMS / 1000 / 60 / 60)
+        lastMin = Math.floor((lastMS - (lastHour * 1000 * 60 * 60)) / 1000 / 60)
+        lastSec = Math.floor((lastMS - (lastHour * 1000 * 60 * 60) - (lastMin * 60 * 1000)) / 1000)
+
+        lastHour = checkTime(lastHour);
+        lastMin = checkTime(lastMin);
+        lastSec = checkTime(lastSec);
+
+        $(this).find('.hous').text(lastHour);
+        $(this).find('.min').text(lastMin);
+        $(this).find('.sec').text(lastSec);
+
+        if (lastMS / 1000 < 0) {
+            $(this).find('.hous').text('00');
+            $(this).find('.min').text('00');
+            $(this).find('.sec').text('00');
+        }
+
+        // if (lastMS / 1000 <= 1) {
+        //     clearInterval(m)
+        // }
+    }.bind(this), 1000)
+}
+
+const checkTime = function (i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
+
+window.onload = function () {
+    if ($(".loader").length) {
+        preloader()
+    }
+}
